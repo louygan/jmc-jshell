@@ -28,6 +28,7 @@ Now you are ready to play around with the JMC core APIs.
 
 ## Examples
 
+### Example10
 Here is an example of a session calculating the standard deviation for the java monitor enter events in the example recording:
 
 ```
@@ -48,6 +49,31 @@ $10 ==> 2112929.68454666us[μs]
 
 ```
 
+
+### Example11
+Here is an example of printing the java monitor enter events in the example recording:
+
+```
+jshell> var allEvents = JfrLoaderToolkit.loadEvents(new File("latency.jfr"))
+allEvents ==> org.openjdk.jmc.flightrecorder.EventCollection@7f010382
+
+jshell> var blockedEvents = allEvents.apply(ItemFilters.type(JdkTypeIDs.MONITOR_ENTER))
+blockedEvents ==> org.openjdk.jmc.flightrecorder.EventCollection@433d61fb
+ 
+jshell> var iterEvent = ItemToolkit.asIterable(blockedEvents)
+iterEvent ==> org.openjdk.jmc.common.item.ItemToolkit$1@2353b3e6
+
+jshell> RecordingPrinter printer=new RecordingPrinter(new PrintWriter(System.out), RecordingPrinter.Verbosity.HIGH, true, null)
+printer ==> org.openjdk.jmc.flightrecorder.RecordingPrinter@37d31475
+
+jshell> for (org.openjdk.jmc.common.item.IItem event : iterEvent ) {
+   ...> printer.printEvent(event);
+   ...> }
+
+```
+
+
+### example20
 Here is another example, evaluating the available rules against the example recording:
 
 ```
